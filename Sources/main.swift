@@ -9,6 +9,8 @@ import VocabulaireLinux
 let log = Log()
 let logger = LogMiddleware(log: log)
 
+let vocabulary: Vocabulary = []
+
 let contentNegotiator = ContentNegotiationMiddleware(mediaTypes: JSONMediaType())
 
 let router = Router(middleware: contentNegotiator) { route in
@@ -22,16 +24,11 @@ let router = Router(middleware: contentNegotiator) { route in
     	}
     	return Response(body: "Fuck off")
     }
-    route.post("/debugUser") { request in
-    	if let content = request.content {
-    		do {
-    			let user = try User(map: Mapper(interchangeData: content))
-    			print(user.username)
-    			return Response(body: "yay")
-    		} catch {
-    			print(error)
-    			return Response(body: String(content))
-    		}
+    route.post("/entry") { request in
+    	if let content = request.content, entry = Entry.from(content) {
+    		print(entry)
+    		vocabulary.append(entry)
+    		return Response(body: String(content))
     	}
     	return Response(body: "Fuck off")
     }
