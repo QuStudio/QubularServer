@@ -5,7 +5,7 @@ import ContentNegotiationMiddleware
 import JSONMediaType
 import VocabulaireLib
 
-let logger = Logger(name: "Main", appender: StandartOutputAppender)
+//let logger = Logger(name: "Main", appender: StandartOutputAppender)
 
 var vocabulary: Vocabulary = []
 
@@ -23,7 +23,7 @@ let router = Router(middleware: contentNegotiator) { route in
     	return Response(body: "Fuck off")
     }
     route.post("/entry") { request in
-    	if let content = request.contednt, entry = Entry.makeWith(structuredData: content) {
+    	if let content = request.content, entry = Entry.makeWith(structuredData: content) {
     		print(entry)
     		vocabulary.append(entry)
     		return Response(body: String(content))
