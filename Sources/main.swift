@@ -4,8 +4,10 @@ import LogMiddleware
 import ContentNegotiationMiddleware
 import JSONMediaType
 import VocabulaireLib
+import StandardOutputAppender
 
-//let logger = Logger(name: "Main", appender: StandartOutputAppender)
+let logger = Logger(name: "Main", appender: StandardOutputAppender())
+let logMiddleware = LogMiddleware(logger: logger)
 
 var vocabulary: Vocabulary = []
 
@@ -47,6 +49,12 @@ let router = Router(middleware: contentNegotiator) { route in
         print(morpheme)
         return Response(body: "Yes")
     }
+    route.get("/test/:string") { request in
+        guard let string = request.pathParameters["string"] else {
+            return Response(status: .internalServerError)
+        }
+        return Response(body: string.uppercased())
+    }
 }
 
-try Server(responder: router).start()
+try Server(middleware: logMiddleware, responder: router).start()
