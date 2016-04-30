@@ -9,7 +9,8 @@ public class ApplicationController {
     
     public init() { }
     
-    public func addEntry(_ entry: Vocabulaire.Entry) throws {
+    public func addEntry(_ data: StructuredData) throws {
+        let entry = try Entry(structuredData: data)
         try persistenceController.insertEntry(entry)
     }
     
