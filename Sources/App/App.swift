@@ -6,7 +6,8 @@ public class ApplicationController {
 
     let persistenceController = try! PersistenceController()
     let serializer = JSONStructuredDataSerializer()
-    
+    let version: VocabularyVersion = .develop
+
     public init() { }
     
     public func addEntry(_ data: StructuredData) throws {
@@ -16,7 +17,7 @@ public class ApplicationController {
     
     public func getAllEntries() throws -> StructuredData {
         let vocabulary = try persistenceController.findAllEntries()
-        return StructuredData.from(vocabulary.map({ $0.structuredData }))
+        return shareVocabulary(vocabulary: vocabulary, with: version)
     }
     
     public func getEntry(for id: Int) throws -> StructuredData {

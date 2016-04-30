@@ -10,11 +10,7 @@ import App
 let logger = Logger(name: "Main", appender: StandardOutputAppender())
 let logMiddleware = LogMiddleware(logger: logger)
 
-let qubular = ApplicationController()
-
-let contentNegotiator = ContentNegotiationMiddleware(mediaTypes: [JSONMediaType()])
-
-let router = Router(middleware: contentNegotiator) { route in
+let router = Router { route in
     route.get("/hello") { _ in
         return Response(body: "hello world")
     }
@@ -24,6 +20,7 @@ let router = Router(middleware: contentNegotiator) { route in
         }
         return Response(body: string.uppercased())
     }
+    route.compose(path: "/api", router: apiRouter)
 }
 
 try Server(middleware: logMiddleware, responder: router).start()
