@@ -1,7 +1,5 @@
 import S4
 
-let secretBoardAPIKey = "Pi6o7c3hQp483fP1yXPJtA8oNh1rg07b"
-
 struct AccessMiddleware: Middleware {
 	func respond(to request: Request, chainingTo chain: Responder) throws -> Response {
 		let deniedResponse = Response(status: .forbidden)

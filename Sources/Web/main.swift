@@ -7,6 +7,9 @@ import StandardOutputAppender
 
 import App
 
+assert(Process.arguments.count == 2)
+let secretBoardAPIKey = Process.arguments.last!
+
 let logger = Logger(name: "Main", appender: StandardOutputAppender())
 let logMiddleware = LogMiddleware(logger: logger)
 
