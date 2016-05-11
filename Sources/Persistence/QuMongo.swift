@@ -2,14 +2,21 @@ import MongoKitten
 import C7
 import VocabulaireLib
 
-public class PersistenceController {
+public protocol PersistenceController {
+    func insertEntry(_ entry: Entry) throws
+    func findAllEntries() throws -> Vocabulary
+    func findEntry(forID id: Int) throws -> Entry
+    func removeEntry(forID id: Int) throws
+}
+
+public class MongoPersistenceController: PersistenceController {
     
     let server: Server
     let database: Database
     let entries: MongoKitten.Collection
     
     public init() throws {
-        server = try Server("mongodb://username:password@localhost:27017", automatically: true)
+        server = try Server("mongodb://qubadmin:takemebackququ@localhost:27017", automatically: true)
         database = server["qubular"]
         entries = database["entries"]
     }
@@ -24,7 +31,7 @@ public class PersistenceController {
         return entriesDocs.flatMap({ try? Entry(document: $0) })
     }
     
-    public func findEntry(for id: Int) throws -> Entry {
+    public func findEntry(forID id: Int) throws -> Entry {
         if let matching = try entries.findOne(matching: "id" == id) {
             return try Entry(document: matching)
         } else {
@@ -32,7 +39,7 @@ public class PersistenceController {
         }
     }
     
-    public func removeEntry(for id: Int) throws {
+    public func removeEntry(forID id: Int) throws {
         try entries.remove(matching: "id" == id)
     }
     

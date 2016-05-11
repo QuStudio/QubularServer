@@ -5,7 +5,7 @@ import StandardOutputAppender
 import S4
 import App
 
-let qubular = ApplicationController()
+let qubular = try! ApplicationController()
 
 let accessMiddleware = AccessMiddleware()
 let contentNegotiator = ContentNegotiationMiddleware(mediaTypes: [JSONMediaType()])
@@ -28,8 +28,7 @@ let apiRouter = Router(middleware: accessMiddleware, contentNegotiator) { route 
 		guard let stringId = request.pathParameters["id"], id = Int(stringId) else {
 			return Response(status: .badRequest)
 		}
-		let entry = try qubular.getEntry(for: id)
+		let entry = try qubular.getEntry(forID: id)
 		return Response(content: entry)
 	}
 }
-
