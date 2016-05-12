@@ -37,4 +37,8 @@ public class ApplicationController {
         try persistenceController.removeEntry(forID: id)
     }
     
+    public func getVersion() -> StructuredData {
+        return version.structuredData
+    }
+    
 }

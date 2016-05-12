@@ -31,4 +31,7 @@ let apiRouter = Router(middleware: accessMiddleware, contentNegotiator) { route 
 		let entry = try qubular.getEntry(forID: id)
 		return Response(content: entry)
 	}
+    route.get("/version") { _ in
+        return Response(content: qubular.getVersion())
+    }
 }
