@@ -26,7 +26,8 @@ public class InMemoryPersistenceController: PersistenceController {
 //    }
     
     public func save() throws {
-        let data = shareVocabulary(vocabulary: vocabulary, with: VocabularyVersion.develop)
+        let data = StructuredData.from(vocabulary.map({ $0.structuredData }))
+//        let data = shareVocabulary(vocabulary: vocabulary, with: VocabularyVersion.develop)
         let rawData = try serializer.serialize(data)
         try file.write(rawData, flushing: true)
     }
